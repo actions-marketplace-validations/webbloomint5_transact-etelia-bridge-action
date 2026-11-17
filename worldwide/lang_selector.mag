@@ -1,5 +1,0 @@
-# LANG_SELECTOR.MAG - GLOBE SELECTOR COMPONENT
-[LANG_SELECTOR]
-default_globe_view = "interactive"
-supported_languages = 11
-rtl_support = ["ar-SA", "fa-IR", "ur-PK"]

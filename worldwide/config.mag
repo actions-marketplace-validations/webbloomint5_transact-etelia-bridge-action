@@ -1,5 +1,0 @@
-# WORLDWIDE CONFIG - LOCALIZATION SETTINGS
-[LOCALE_CONFIG]
-default_locale = "en-US"
-supported_locales = ["en-US", "es-ES", "it-IT", "fr-FR", "de-DE", "ar-SA", "ja-JP"]
-auto_detect = true

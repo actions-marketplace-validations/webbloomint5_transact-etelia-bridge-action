@@ -1,4 +1,0 @@
-# GLOBAL DICTIONARY - MULTILINGUAL BRIDGE TERMS
-[DICTIONARY]
-"bridge_title" = { "en" = "Bridge Engine", "es" = "Motor de Puentes", "it" = "Motore di Ponti", "fr" = "Moteur de Ponts" }
-"zero_crash" = { "en" = "Zero Crash Guaranteed", "es" = "Cero Crashes Garantizado", "it" = "Zero Crash Garantito", "fr" = "Zero Crash Garanti" }
