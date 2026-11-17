@@ -37,3 +37,10 @@ transact-etelia-bridge/
 This repository and all contained architectures are strictly proprietary and protected under the EULA (EULA.md) and ULMA Shield (.ulma).
 
 © 2026 Tiziana Maggio — DevLab Solutions.
+
+---
+
+## ⚖️ Legal Disclaimer, EULA & Limitation of Liability (Manleva)
+* **Copyright © 2026 Tiziana Maggio.** All rights reserved under international intellectual property laws.
+* **"AS-IS" Distribution:** This engine is provided strictly **"AS-IS"** without any express or implied warranty.
+* **Zero Liability & Backup Notice:** The Author (Tiziana Maggio) assumes **zero responsibility** for any file modifications, data loss, or unintended side effects resulting from improper configuration or execution without prior backups. By running this GitHub Action or IDE, the End User accepts full responsibility for their codebase and agrees to indemnify and hold the Author harmless from any claims. See `LICENSE.md` for full terms.
