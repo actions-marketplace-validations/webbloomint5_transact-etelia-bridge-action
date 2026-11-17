@@ -1,0 +1,14 @@
+name: 'Transact & Etelia Bridge Engine'
+description: 'Sovereign multi-language code transmutation, database normalization & zero-dependency engine by Tiziana Maggio.'
+author: 'Tiziana Maggio'
+inputs:
+  source_dir:
+    description: 'Directory containing legacy source code (SQL, NoSQL, React, Svelte, Laravel, C++, Java)'
+    required: true
+    default: '.'
+runs:
+  using: 'node16'
+  main: 'main.mag'
+branding:
+  icon: 'shield'
+  color: 'blue'

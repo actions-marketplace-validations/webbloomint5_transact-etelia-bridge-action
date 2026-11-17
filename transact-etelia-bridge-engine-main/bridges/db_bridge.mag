@@ -1,0 +1,12 @@
+# DB_BRIDGE.MAG - SQL & NOSQL CONFLICT RESOLUTION BRIDGE
+# Transact & Etelia Bridge Engine
+
+[DB_BRIDGE_CORE]
+supported_sql = ["MySQL", "PostgreSQL", "Oracle", "SQLite", "SQL Server"]
+supported_nosql = ["MongoDB", "Redis", "DynamoDB", "Cassandra"]
+normalization_mode = "ZERO_COLLISION"
+
+[SCHEMA_RULES]
+convert_legacy_orms_to_native_vaults = true
+auto_resolve_sql_nosql_type_mismatch = true
+zero_unindexed_query_enforcement = true

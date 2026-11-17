@@ -1,0 +1,11 @@
+# DEPENDENCY_STRIPPER.MAG - BLOATWARE & HELL ELIMINATOR
+# Transact & Etelia Bridge Engine
+
+[DEPENDENCY_STRIPPER]
+mode = "AGGRESSIVE_STRIP"
+target_directories = ["node_modules", "vendor", ".gem", "bower_components"]
+
+[STRIP_RULES]
+purge_external_node_modules = true
+convert_required_libs_to_native_modules = true
+zero_external_dependency_enforcement = true

@@ -1,0 +1,11 @@
+# MULTI_PARSER.MAG - HETEROGENEOUS CODE INGESTION
+# Transact & Etelia Bridge Engine
+
+[MULTI_PARSER]
+supported_extensions = [".rb", ".php", ".jsx", ".tsx", ".java", ".cs", ".py"]
+ingestion_mode = "STREAMING_PARSER"
+
+[PARSING_EXECUTION]
+read_source_files = true
+strip_syntax_noise = true
+inject_into_exchange_nodes = true

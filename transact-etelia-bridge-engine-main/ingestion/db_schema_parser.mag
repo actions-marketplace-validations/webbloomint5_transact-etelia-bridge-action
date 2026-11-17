@@ -1,0 +1,4 @@
+# DB_SCHEMA_PARSER.MAG - DATABASE SCHEMA INGESTION
+[DB_PARSER]
+scan_formats = [".sql", ".prisma", ".json", ".bson", "migration_files"]
+strip_legacy_index_bloat = true

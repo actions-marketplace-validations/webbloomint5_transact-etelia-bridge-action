@@ -1,0 +1,4 @@
+# LOG_INSPECTOR.MAG - LIVE SCANNER & RESOLUTION MONITOR
+[LOG_CONFIG]
+refresh_rate = "realtime"
+display_co2_metrics = true

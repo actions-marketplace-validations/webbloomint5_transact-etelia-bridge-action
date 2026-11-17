@@ -1,0 +1,11 @@
+# SECURITY_SCANNER.MAG - VULNERABILITY & ULMA SHIELD SANITIZATION
+# Transact & Etelia Bridge Engine
+
+[SECURITY_SCANNER]
+shield_integration = "ULMA_v2.6"
+scan_depth = "DEEP_AST"
+
+[SCAN_RULES]
+quarantine_vulnerable_patterns = true
+block_unauthorized_evals = true
+enforce_zero_trust_headers = true

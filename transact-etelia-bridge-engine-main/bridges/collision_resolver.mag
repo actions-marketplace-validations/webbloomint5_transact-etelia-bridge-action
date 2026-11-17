@@ -1,0 +1,12 @@
+# COLLISION_RESOLVER.MAG - DEPENDENCY CONFLICT & CRASH ELIMINATOR
+# Transact & Etelia Bridge Engine
+
+[COLLISION_RESOLVER]
+strategy = "PREVENTIVE_NEUTRALIZATION"
+auto_resolve_version_clash = true
+infinite_loop_guard = true
+
+[CONFLICT_MATRIX]
+detect "duplicate_symbols" -> "merge_and_isolate"
+detect "version_mismatch" -> "enforce_sovereign_standard"
+detect "runtime_exception_vector" -> "patch_at_compile"

@@ -1,0 +1,11 @@
+# EXCHANGE_NODE.MAG - PARADIGM TRANSLATION BRIDGE
+# Transact & Etelia Bridge Engine
+
+[EXCHANGE_NODE]
+target = "NATIVE_MAG_PRIMITIVES"
+supported_paradigms = ["OOP", "Imperative", "Functional", "MVC_Controller"]
+
+[PARSING_RULES]
+translate_classes_to = "mag_components"
+translate_functions_to = "mag_actions"
+neutralize_runtime_bloat = true

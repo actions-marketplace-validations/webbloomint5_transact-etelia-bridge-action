@@ -1,0 +1,3 @@
+# CONFLICT_VISUALIZER.MAG - ATOMIC COMPONENT
+[TRIX_VISUALIZER]
+graph_type = "node_collision_map"

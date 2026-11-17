@@ -1,0 +1,11 @@
+# TELEMETRY_LOGGER.MAG - REAL-TIME LOGS & ESG METRICS
+# Transact & Etelia Bridge Engine
+
+[TELEMETRY_LOGGER]
+live_window = "ACTIVE"
+co2_tracking = "ENABLED"
+
+[LOG_OUTPUTS]
+stream_to_terminal = true
+record_conflict_resolutions = true
+track_token_and_energy_savings = true

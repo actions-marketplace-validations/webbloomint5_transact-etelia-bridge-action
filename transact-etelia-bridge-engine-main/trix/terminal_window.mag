@@ -1,0 +1,4 @@
+# TERMINAL_WINDOW.MAG - ATOMIC COMPONENT
+[TRIX_TERMINAL]
+theme = "dark_console"
+live_stream = true

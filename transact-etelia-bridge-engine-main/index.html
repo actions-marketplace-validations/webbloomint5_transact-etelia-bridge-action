@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transact & Etelia Bridge Engine - Sovereign IDE</title>
+    <style>
+        :root {
+            --bg-base: #070b14;
+            --bg-panel: #0f172a;
+            --border-color: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-rose: #f43f5e;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace, sans-serif;
+            margin: 0;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            gap: 12px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #38bdf8, #0284c7); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #070b14; }
+        h1 { font-size: 1.15rem; margin: 0; color: var(--accent-blue); }
+        .controls-top { display: flex; gap: 12px; align-items: center; }
+        select { background: var(--bg-panel); color: var(--accent-blue); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; font-family: inherit; cursor: pointer; }
+        
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            flex: 1;
+            min-height: 0;
+        }
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: #162033;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+        }
+        textarea {
+            flex: 1;
+            background: transparent;
+            color: #e2e8f0;
+            border: none;
+            padding: 12px 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            resize: none;
+            outline: none;
+            line-height: 1.45;
+        }
+        .action-bar {
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            background: rgba(7, 11, 20, 0.7);
+            gap: 10px;
+        }
+        button, .upload-btn {
+            background: var(--accent-rose);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .upload-btn { background: #1e293b; border: 1px solid #334155; color: var(--accent-blue); }
+        button:hover, .upload-btn:hover { opacity: 0.9; }
+        
+        .log-panel {
+            height: 135px;
+            background: #05080f;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .log-header {
+            background: #111827;
+            padding: 5px 12px;
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        .log-body {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+        .log-line-ok { color: #10b981; }
+        .log-line-bridge { color: #38bdf8; }
+
+        .status-badge { color: var(--accent-green); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .status-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .esg-metrics { display: flex; gap: 18px; color: var(--accent-green); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">TM</div>
+            <div>
+                <h1 id="ui-title">Transact & Etelia Bridge IDE</h1>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Real Ingestion Pipeline (/ingress → Bridges → /dist) | ULMA Shield v2.6</span>
+            </div>
+        </div>
+        <div class="controls-top">
+            <div class="status-badge"><div class="status-dot"></div><span id="ui-status">Pipeline Ready</span></div>
+            <select id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English (Native)</option>
+                <option value="es">Español</option>
+                <option value="it">Italiano</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="ja">日本語</option>
+                <option value="ar">العربية</option>
+                <option value="ur">اردو</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <!-- Ingestion Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <span id="ui-ingest-title">📥 1. INGESTION (/ingress)</span>
+                <span id="activeFilename" style="color: var(--accent-blue);">snippet.jsx</span>
+            </div>
+            <textarea id="sourceInput" placeholder="// Upload a real file or paste legacy code here (React, Laravel, Ruby, Java, C#, C++, Python)...">import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import _ from 'lodash';
+
+export function LegacyDashboard() {
+    const [items, setItems] = useState([]);
+    useEffect(() => {
+        axios.get('/api/heavy-endpoint').then(res => setItems(_.uniq(res.data)));
+    }, []);
+    return <div className="legacy-wrapper">Enterprise Legacy Module</div>;
+}</textarea>
+            <div class="action-bar">
+                <label class="upload-btn">
+                    📂 <span id="ui-upload">Import Source File</span>
+                    <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload(event)">
+                </label>
+                <button onclick="runTransmutation()" id="ui-btn">⚡ Scan & Transmute via Bridges</button>
+            </div>
+        </div>
+
+        <!-- Output Clean Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <span id="ui-output-title">📦 2. SOVEREIGN EXPORT (/dist)</span>
+                <span id="distFilenameLabel" style="color: var(--accent-green);">Ready</span>
+            </div>
+            <textarea id="outputResult" readonly placeholder="// Transmuted zero-dependency .mag file will be generated in /dist and shown here..."></textarea>
+            <div class="action-bar">
+                <button style="background: #1e293b; border: 1px solid #334155;" onclick="copyOutput()" id="ui-copy">📋 Copy</button>
+                <button style="background: #10b981; color: #05080f;" onclick="downloadMagFile()" id="ui-download">⬇️ Download .mag File</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Scanner & Bridge Logs -->
+    <div class="log-panel">
+        <div class="log-header">
+            <span id="ui-log-title">🔍 LIVE SCANNER & BRIDGE EXECUTION LOGS (/logs)</span>
+            <span id="detectedLangBadge">Detected Stack: Waiting for scan...</span>
+        </div>
+        <div class="log-body" id="logConsole">
+            <div>[SYSTEM] Transact & Etelia Sovereign Engine initialized. Waiting for file ingestion in /ingress...</div>
+        </div>
+    </div>
+
+    <footer>
+        <div>Tiziana Maggio © 2026 — All Rights Reserved. Protected under ULMA Shield.</div>
+        <div class="esg-metrics">
+            <span>🌱 CO2 Emissions: <strong style="color: #38bdf8;">0.0001g/Op</strong> (Zero-Emission)</span>
+            <span>⚡ Bloatware Stripped: <strong id="bloatStat" style="color: #10b981;">100%</strong></span>
+        </div>
+    </footer>
+
+    <script>
+        let currentFilename = "snippet.jsx";
+        let currentDistFilename = "snippet_sovereign.mag";
+
+        const translations = {
+            en: { title: "Transact & Etelia Bridge IDE", status: "Pipeline Ready", ingest: "📥 1. INGESTION (/ingress)", output: "📦 2. SOVEREIGN EXPORT (/dist)", upload: "Import Source File", btn: "⚡ Scan & Transmute via Bridges", copy: "📋 Copy", download: "⬇️ Download .mag File", logTitle: "🔍 LIVE SCANNER & BRIDGE EXECUTION LOGS (/logs)" },
+            es: { title: "IDE de Puentes Transact & Etelia", status: "Pipeline Listo", ingest: "📥 1. INGESTA (/ingress)", output: "📦 2. EXPORTACIÓN SOBERANA (/dist)", upload: "Importar Archivo", btn: "⚡ Escanear y Transmutar", copy: "📋 Copiar", download: "⬇️ Descargar .mag", logTitle: "🔍 REGISTROS DEL ESCÁNER EN VIVO (/logs)" },
+            it: { title: "IDE Bridge Transact & Etelia", status: "Pipeline Pronta", ingest: "📥 1. INGESTIONE (/ingress)", output: "📦 2. ESPORTAZIONE SOVRANA (/dist)", upload: "Importa File Sorgente", btn: "⚡ Scansiona e Transmuta", copy: "📋 Copia", download: "⬇️ Scarica File .mag", logTitle: "🔍 LOG SCANNER & ESECUZIONE BRIDGE (/logs)" },
+            fr: { title: "IDE Bridge Transact & Etelia", status: "Pipeline Prêt", ingest: "📥 1. INGESTION (/ingress)", output: "📦 2. EXPORTATION SOUVERAINE (/dist)", upload: "Importer Fichier", btn: "⚡ Scanner & Transmuter", copy: "📋 Copier", download: "⬇️ Télécharger .mag", logTitle: "🔍 JOURNAUX DU SCANNER EN DIRECT (/logs)" },
+            de: { title: "Transact & Etelia Bridge IDE", status: "Pipeline Bereit", ingest: "📥 1. INGESTION (/ingress)", output: "📦 2. SOUVERÄNER EXPORT (/dist)", upload: "Datei Importieren", btn: "⚡ Scannen & Transmutieren", copy: "📋 Kopieren", download: "⬇️ .mag Herunterladen", logTitle: "🔍 LIVE-SCANNER & BRIDGE-LOGS (/logs)" },
+            ja: { title: "Transact & Etelia ブリッジ IDE", status: "パイプライン準備完了", ingest: "📥 1. インジェスト (/ingress)", output: "📦 2. エクスポート (/dist)", upload: "ファイルを選択", btn: "⚡ スキャン＆変換", copy: "📋 コピー", download: "⬇️ .mag ダウンロード", logTitle: "🔍 ライブスキャナー＆ブリッジログ (/logs)" },
+            ar: { title: "بيئة تطوير الجسور Transact & Etelia", status: "النظام جاهز", ingest: "📥 1. الاستيعاب (/ingress)", output: "📦 2. التصدير (/dist)", upload: "استيراد ملف", btn: "⚡ فحص وتحويل", copy: "📋 نسخ", download: "⬇️ تحميل .mag", logTitle: "🔍 سجلات الفحص المباشر (/logs)" },
+            ur: { title: "Transact & Etelia Bridge IDE", status: "پائپ لائن تیار ہے", ingest: "📥 1. انجيشن (/ingress)", output: "📦 2. برآمد (/dist)", upload: "فائل درآمد کریں", btn: "⚡ اسکین اور تبدیل کریں", copy: "📋 کاپی", download: "⬇️ .mag ڈاؤن لوڈ کریں", logTitle: "🔍 لائیو اسکینر لاگز (/logs)" }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang] || translations.en;
+            document.getElementById('ui-title').innerText = t.title;
+            document.getElementById('ui-status').innerText = t.status;
+            document.getElementById('ui-ingest-title').innerText = t.ingest;
+            document.getElementById('ui-output-title').innerText = t.output;
+            document.getElementById('ui-upload').innerText = t.upload;
+            document.getElementById('ui-btn').innerText = t.btn;
+            document.getElementById('ui-copy').innerText = t.copy;
+            document.getElementById('ui-download').innerText = t.download;
+            document.getElementById('ui-log-title').innerText = t.logTitle;
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            currentFilename = file.name;
+            document.getElementById('activeFilename').innerText = currentFilename;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('sourceInput').value = e.target.result;
+                appendLog(`[INGESTION] Loaded local file '${currentFilename}' into editor buffer. Ready for scan.`, 'log-line-bridge');
+            };
+            reader.readAsText(file);
+        }
+
+        function appendLog(text, cls = '') {
+            const consoleEl = document.getElementById('logConsole');
+            const div = document.createElement('div');
+            if (cls) div.className = cls;
+            div.innerText = text;
+            consoleEl.appendChild(div);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        async function runTransmutation() {
+            const code = document.getElementById('sourceInput').value;
+            const logConsole = document.getElementById('logConsole');
+            logConsole.innerHTML = '';
+            appendLog(`[INIT] Sending '${currentFilename}' to Transact & Etelia Sovereign Pipeline...`, 'log-line-bridge');
+
+            try {
+                const res = await fetch('/api/transmute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: currentFilename, code: code })
+                });
+                const data = await res.json();
+                
+                data.logs.forEach(line => {
+                    const cls = line.includes('BRIDGE') ? 'log-line-bridge' : (line.includes('EXPORT') || line.includes('ULMA') ? 'log-line-ok' : '');
+                    appendLog(line, cls);
+                });
+
+                currentDistFilename = data.dist_filename;
+                document.getElementById('distFilenameLabel').innerText = `/dist/${currentDistFilename}`;
+                document.getElementById('detectedLangBadge').innerText = `Detected Stack: ${data.detected_lang}`;
+                document.getElementById('outputResult').value = data.transmuted_code;
+                document.getElementById('bloatStat').innerText = `${data.stats.purged_deps} deps purged`;
+            } catch (err) {
+                appendLog(`[ERROR] Backend engine unreachable. Start server with ./simsalabim 3030`, 'log-line-bridge');
+            }
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('outputResult');
+            if (!output.value) return;
+            navigator.clipboard.writeText(output.value);
+            appendLog(`[CLIPBOARD] Copied '${currentDistFilename}' to clipboard.`, 'log-line-ok');
+        }
+
+        function downloadMagFile() {
+            const content = document.getElementById('outputResult').value;
+            if (!content) {
+                alert('Run Scan & Transmute first to generate the sovereign .mag file!');
+                return;
+            }
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentDistFilename;
+            a.click();
+            URL.revokeObjectURL(url);
+            appendLog(`[DOWNLOAD] Exported '${currentDistFilename}' to local machine.`, 'log-line-ok');
+        }
+    </script>
+</body>
+</html>
