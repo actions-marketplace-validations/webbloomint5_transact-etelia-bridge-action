@@ -1,0 +1,19 @@
+name: Transact & Etelia Enterprise Test
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  run-bridge-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Transact & Etelia Bridge Engine v2.0.1
+        uses: webbloomint5/transact-etelia-bridge-action@v2.0.1
+        with:
+          shield_mode: 'ulma-strict'
