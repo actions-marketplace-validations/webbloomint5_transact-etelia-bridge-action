@@ -11,20 +11,14 @@
 
 Add this Action to your workflow to integrate sovereign code transmutation and `.ulma` protection:
 
-```yaml
 steps:
   - name: Checkout Code
     uses: actions/checkout@v4
 
   - name: Transact & Etelia Bridge Engine
-    uses: webbloomint5/transact-etelia-bridge-action@v2.0.1
+    uses: webbloomint5/transact-etelia-bridge-action@v2.0.2
     with:
-      shield_mode: 'ulma-strict'
-      bloat_reduction: '99.2'
-```
-
----
-
+      source_dir: './examples'
 ## 🚀 Core Vision: Eliminating Dependency Hell
 Modern enterprise software suffers from systemic fragility caused by thousands of conflicting third-party dependencies (`node_modules`, `composer`, `gems`, legacy runtime bloat). 
 
