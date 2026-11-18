@@ -7,7 +7,7 @@ inputs:
     required: true
     default: '.'
 runs:
-  using: 'node16'
+  using: 'node24'
   main: 'main.mag'
 branding:
   icon: 'shield'
